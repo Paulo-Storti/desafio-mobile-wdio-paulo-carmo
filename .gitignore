@@ -1,0 +1,4 @@
+allure-results/
+node_modules/
+test/specs/auth/
+test/pageobjects/auth.page.js
