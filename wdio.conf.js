@@ -16,10 +16,12 @@ exports.config = {
         'appium:platformVersion': '16.0',
         'appium:automationName': 'UiAutomator2',
         'appium:app': path.resolve('./app/android/android.wdio.native.app.v1.0.8.apk'),
-        'appium:autoGrantPermissions': true
+        'appium:autoGrantPermissions': true,
+        'appium:noReset': false,
+        'appium:newCommandTimeout': 120
     }],
 
-    logLevel: 'info',
+    logLevel: 'warn',
     bail: 0,
     waitforTimeout: 10000,
     connectionRetryTimeout: 120000,
@@ -27,28 +29,38 @@ exports.config = {
 
     services: [
         ['appium', {
+            command: 'appium',
             args: {
                 address: '127.0.0.1',
                 port: 1991,
-            },
-            command: 'appium'
+                relaxedSecurity: true
+            }
         }]
     ],
 
     framework: 'mocha',
     reporters: [
         'spec',
-        ['allure', { outputDir: 'allure-results', disableWebdriverStepsReporting: true }]
+        ['allure', { 
+            outputDir: 'allure-results', 
+            disableWebdriverStepsReporting: true,
+            disableWebdriverScreenshotsReporting: false
+        }]
     ],
 
     mochaOpts: {
         ui: 'bdd',
-        timeout: 60000
+        timeout: 90000
     },
 
-    afterTest: async function (test, context, { error, result, duration, passed }) {
+    beforeSuite: function () {
+        if (global.gc) global.gc();
+    },
+
+    afterTest: async function (test, context, { error, passed }) {
         if (!passed) {
             await browser.takeScreenshot();
         }
-    }
+        if (global.gc) global.gc();
+    },
 };
