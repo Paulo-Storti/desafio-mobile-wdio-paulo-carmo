@@ -21,7 +21,7 @@ exports.config = {
         'appium:newCommandTimeout': 120
     }],
 
-    logLevel: 'warn',
+    logLevel: 'info',
     bail: 0,
     waitforTimeout: 10000,
     connectionRetryTimeout: 120000,
