@@ -1,29 +1,16 @@
-import DragDrop from '../pageobjects/drag.page.js'
+import { completeDragAndDropAndRetry, openDrag, renewDragAndDrop } from '../helpers/drag-actions.js'
 
-describe('Drag and drop', () => {
-    it('Check if title "Drag and Drop" is displayed', async () => {
-        await DragDrop.btnDrag.click()
-        await expect(DragDrop.titleDragAndDrop).toBeDisplayed()
+    beforeEach(async () => {
+        await openDrag()
     })
-    it('Check if Drag is selected', async () => {
-        await DragDrop.btnDrag.click()
-        const isDragSelected = await DragDrop.isDragSelected()
-        expect(isDragSelected).toBe(true)
+
+describe('Validate drag and drop', () => {
+
+    it('Renew drag and drop', async () => {
+        await renewDragAndDrop()
     })
-    it('Renew Drag and Drop', async () => {
-        await DragDrop.dragAndDrop(DragDrop.dragLeftHead, DragDrop.dropLeftHead)
-        await DragDrop.btnRenew.click()
-    })
-    it('Complete Drag and Drop', async () => {
-        await DragDrop.dragAndDrop(DragDrop.dragLeftHead, DragDrop.dropLeftHead)
-        await DragDrop.dragAndDrop(DragDrop.dragMiddleHead, DragDrop.dropMiddleHead)
-        await DragDrop.dragAndDrop(DragDrop.dragRightHead, DragDrop.dropRightHead)
-        await DragDrop.dragAndDrop(DragDrop.dragLeftTorso, DragDrop.dropLeftTorso)
-        await DragDrop.dragAndDrop(DragDrop.dragMiddleTorso, DragDrop.dropMiddleTorso)
-        await DragDrop.dragAndDrop(DragDrop.dragRightTorso, DragDrop.dropRightTorso)
-        await DragDrop.dragAndDrop(DragDrop.dragLeftLegs, DragDrop.dropLeftLegs)
-        await DragDrop.dragAndDrop(DragDrop.dragMiddleLegs, DragDrop.dropMiddleLegs)
-        await DragDrop.dragAndDrop(DragDrop.dragRightLegs, DragDrop.dropRightLegs)
-        await expect(DragDrop.titleCongratulations).toBeDisplayed()
+
+    it('Complete drag and drop and retry', async () => {
+        await completeDragAndDropAndRetry()
     })
 })

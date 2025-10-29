@@ -1,14 +1,13 @@
 import FormsPage from '../pageobjects/forms.page.js'
-import { validateAllDropdownOptions, toggleSwitchOff, toggleSwitchOn, buttonsInactiveValidate, closeModal, validateActiveButtonOpensModal, validateCloseModalWithOkButton, validateCloseModalWithCancelButton, validateCloseModalWithAskMeLaterButton } from '../helpers/forms-actions.js'
+import { openForms, fillTextAndValidate, validateAllDropdownOptions, toggleSwitchOff, toggleSwitchOn, buttonsInactiveValidate, closeModal, validateActiveButtonOpensModal, validateCloseModalWithOkButton, validateCloseModalWithCancelButton, validateCloseModalWithAskMeLaterButton } from '../helpers/forms-actions.js'
 
 beforeEach(async () => {
-    await FormsPage.openForms()
-    await browser.pause(1000)
+    await openForms()
 })
 
 describe('Validate Forms', () => {
     it('Insert text and validate', async () => {
-        await FormsPage.fillTextAndValidate()
+        await fillTextAndValidate()
     })
 
     it('Toggle switch on and valitade', async () => {

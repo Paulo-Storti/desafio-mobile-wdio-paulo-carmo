@@ -1,25 +1,28 @@
 import WebviewPage from '../pageobjects/webview.page.js'
 import { scrollUntilVisible } from '../helpers/gestures.js'
-import { closeUkraineSupportInfo, searchBlockOutSideBar, backHome, switchToDarkMode, openMenu, changeLanguageToPtBr, accessAndValidate, closeWebPage, accessAndValidateV9Options, expandLanguage, searchWithAICopilot } from '../helpers/webview-actions.js'
+import { openWebview, closeUkraineSupportInfo, searchBlockOutSideBar, backHome, switchToDarkMode, openMenu, changeLanguageToPtBr, accessAndValidate, closeWebPage, accessAndValidateV9Options, expandLanguage, searchWithAICopilot } from '../helpers/webview-actions.js'
 import { sectionsWebviewMenu, sectionsWebviewMenuV9 } from '../data/webview.data.js'
 
 
-beforeEach(async () => {
-    await browser.reloadSession()
-    await WebviewPage.openWebview()
-})
-
 describe('Validate Webview', async () => {
+
+    beforeEach(async () => {
+        await browser.reloadSession()
+        await openWebview()
+    })
+
     it('Close Ukraine notification', async () => {
         await closeUkraineSupportInfo()
     })
-    it('Search for documentation and back to home', async () => {
-        await searchBlockOutSideBar()
-        await backHome()
-    })
+
     it('Switch to dark mod', async () => {
         await openMenu()
         await switchToDarkMode()
+    })
+
+    it('Search for documentation and back to home', async () => {
+        await searchBlockOutSideBar()
+        await backHome()
     })
 
     for (const [key, s] of Object.entries(sectionsWebviewMenu)) {
@@ -39,8 +42,7 @@ describe('Validate Webview', async () => {
                 await s.btn().click()
                 await browser.pause(2000)
             }
-            await accessAndValidateV9Options(s.btn(), s.optButton())
-            await browser.pause(3000)
+            await accessAndValidateV9Options(s.optButton())
             await closeWebPage()
         })
     }

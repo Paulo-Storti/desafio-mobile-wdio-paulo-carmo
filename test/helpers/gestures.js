@@ -1,4 +1,4 @@
-export async function scrollUntilVisible(selectorOrElement, direction = 'down', maxSwipes = 10) {
+export async function scrollUntilVisible(selectorOrElement, direction = 'down', maxSwipes = 20) {
     const element = typeof selectorOrElement === 'string'
         ? await $(selectorOrElement)
         : selectorOrElement
@@ -45,7 +45,7 @@ export async function scrollCarouselUntilVisible(carousel, targetElement) {
     const anchorY = y + height / 2
 
     let swipes = 0
-    const maxSwipes = 10
+    const maxSwipes = 20
 
     while (!(await targetElement.isDisplayed()) && swipes < maxSwipes) {
         await driver.performActions([{

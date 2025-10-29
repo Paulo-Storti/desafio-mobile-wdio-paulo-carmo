@@ -1,6 +1,19 @@
 import { browser, expect } from '@wdio/globals'
 import FormsPage from '../pageobjects/forms.page.js';
 
+
+export async function openForms() {
+    await FormsPage.btnForms.click()
+    await browser.pause(1500)
+    await expect(FormsPage.titleForms).toBeDisplayed()
+    const selected = await FormsPage.btnForms.getAttribute('selected')
+    return selected === 'true'
+}
+
+export async function fillTextAndValidate() {
+    await insertAndValidateText(FormsPage.fieldInput, FormsPage.fieldResultInput, FormsPage.textInput)
+}
+
 export async function insertAndValidateText(fieldInput, fieldResultInput, textInput) {
     await fieldInput.setValue(textInput)
     await expect(fieldResultInput).toBeDisplayed()

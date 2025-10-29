@@ -43,4 +43,5 @@ class SwipePage {
     }
 }
 
+
 export default new SwipePage()

@@ -83,21 +83,7 @@ class FormsPage {
         return $('//android.widget.Button[@resource-id="android:id/button1"]')
     }
 
-    async isFormsSelected() {
-        const selected = await this.btnForms.getAttribute('selected')
-        return selected === 'true'
-    }
-
-    async openForms() {
-        await this.btnForms.click()
-        await expect(this.titleForms).toBeDisplayed()
-        const isFormsSelected = await this.isFormsSelected()
-        await expect(isFormsSelected).toBe(true)
-    }
-
-    async fillTextAndValidate() {
-        await insertAndValidateText(this.fieldInput, this.fieldResultInput, this.textInput)
-    }
 }
 
 export default new FormsPage()
+

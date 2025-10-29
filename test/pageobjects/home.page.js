@@ -5,17 +5,16 @@ class HomeAPP {
     get titleHome() {
         return $('//android.widget.TextView[@text="WEBDRIVER"]')
     }
+
+    txtTitleHome = 'WEBDRIVER'
+
     get subtitleHome() {
         return $('//android.widget.TextView[@text="Demo app for the appium-boilerplate"]')
     }
+
+    txtSubTitleHome = 'Demo app for the appium-boilerplate'
     get btnHome() {
         return $('~Home')
-    }
-
-    async isHomeSelected() {
-        const selected = await this.btnHome.getAttribute('selected')
-        console.log('Selected:', selected)
-        return selected === 'true'
     }
 }
 
