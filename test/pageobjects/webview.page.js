@@ -187,28 +187,22 @@ class WebviewPage {
         return $('//android.widget.Image[@text="WebdriverIO AI Copilot"]')
     }
 
-    get btnAsk(){
+    get btnAsk() {
         return $('//android.widget.Button[@text="Ask"]')
     }
 
-    get inputUserAICopilot(){
+    get inputUserAICopilot() {
         return $('//android.widget.EditText[@resource-id="userInput"]')
     }
 
-    get respHelpful(){
+    get respHelpful() {
         return $('//android.widget.TextView[@text="Was this response helpful?"]')
     }
 
     txtUserAICopilot = 'Documentation WDIO'
 
     txtHelpful = 'Was this response helpful?'
-
-    async openWebview() {
-        await this.btnWebview.click()
-        await browser.pause(5000)
-        const selected = await this.btnWebview.getAttribute('selected')
-        return selected === 'true'
-    }
+    
 }
 
 export default new WebviewPage()

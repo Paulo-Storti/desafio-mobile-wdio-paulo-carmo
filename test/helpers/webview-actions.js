@@ -1,5 +1,11 @@
-import { click } from 'appium-uiautomator2-driver/build/lib/commands/element.js'
 import WebviewPage from '../pageobjects/webview.page.js'
+
+export async function openWebview() {
+        await WebviewPage.btnWebview.click()
+        await browser.pause(5000)
+        const selected = await WebviewPage.btnWebview.getAttribute('selected')
+        return selected === 'true'
+    }
 
 export async function closeUkraineSupportInfo() {
     await WebviewPage.btnCloseUkraine.click()
@@ -40,7 +46,8 @@ export async function switchToDarkMode() {
 }
 
 export async function expandLanguage() {
-    await WebviewPage.btnLanguage.click()    
+    await WebviewPage.btnLanguage.click()
+    await browser.pause(1000)
 }
 
 export async function changeLanguageToPtBr() {
@@ -72,7 +79,7 @@ export async function searchWithAICopilot() {
     await WebviewPage.btnAsk.click()
     await browser.pause(5000)
     const answerAICopilot = await WebviewPage.respHelpful.getText()
-    await expect(answerAICopilot).toContain(WebviewPage.txtHelpful)    
+    await expect(answerAICopilot).toContain(WebviewPage.txtHelpful)
 }
 
 export async function closeWebPage() {
@@ -98,3 +105,4 @@ export async function closeWebPage() {
     }
     await browser.pause(2000)
 }
+

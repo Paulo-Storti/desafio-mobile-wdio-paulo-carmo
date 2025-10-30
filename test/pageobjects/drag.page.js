@@ -1,10 +1,10 @@
 import BasePage from './base.page.js'
 
 class DragDrop extends BasePage {
-    get btnDrag(){
+    get btnDrag() {
         return $('//android.widget.TextView[@text="Drag"]')
     }
-    get titleDragAndDrop(){
+    get titleDragAndDrop() {
         return $('//android.widget.TextView[@text="Drag and Drop"]')
     }
     get dragLeftHead() {
@@ -61,23 +61,19 @@ class DragDrop extends BasePage {
     get dropRightLegs() {
         return $('//android.view.ViewGroup[@content-desc="drop-r3"]/android.view.ViewGroup')
     }
-    get btnRenew () {
+    get btnRenew() {
         return $('//android.view.ViewGroup[@content-desc="renew"]')
     }
-    get titleCongratulations(){
+    get titleCongratulations() {
         return $('//android.widget.TextView[@text="Congratulations"]')
     }
-    get subtitleCongratulations(){
+    get subtitleCongratulations() {
         return $('//android.widget.TextView[@text="You made it, click retry if you want to try it again."]')
     }
-    get btnRetryAfterCongratulations(){
-        return $('//android.view.ViewGroup[@content-desc="button-Retry"]/android.view.ViewGroup')
+    get btnRetryAfterCongratulations() {
+        return $('~button-Retry')
     }
 
-    async isDragSelected() {
-        const selected = await this.btnDrag.getAttribute('selected')
-        return selected === 'true'
-    }
 }
 
 export default new DragDrop()
