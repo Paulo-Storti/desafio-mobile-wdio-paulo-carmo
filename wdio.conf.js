@@ -1,6 +1,8 @@
 import path from 'path'
 import allure from '@wdio/allure-reporter'
 
+const isCI = process.env.CI === 'true' // detecta se está rodando no GitHub Actions
+
 export const config = {
     runner: 'local',
     port: 1991,
@@ -10,14 +12,12 @@ export const config = {
 
     capabilities: [{
         platformName: 'Android',
-        'appium:deviceName': 'emulator-5554',
-        'appium:udid': 'emulator-5554',
-        'appium:platformVersion': '16.0',
+        'appium:deviceName': isCI ? 'Android Emulator' : 'emulator-5554',
+        'appium:platformVersion': isCI ? '11.0' : '16.0',
         'appium:automationName': 'UiAutomator2',
         'appium:app': path.resolve('./app/android/android.wdio.native.app.v1.0.8.apk'),
         'appium:autoGrantPermissions': true,
         'appium:noReset': false,
-        'appium:newCommandTimeout': 120
     }],
 
     logLevel: 'info',
@@ -56,7 +56,15 @@ export const config = {
                 collapseTests: false,
                 removeOutput: true,
                 useOnAfterCommandForScreenshot: true,
-                showScreenshot: true
+                showScreenshot: true,
+                styleOverrides: `
+                    img {
+                        max-width: 400px;
+                        max-height: 400px;
+                        border-radius: 10px;
+                        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+                    }
+                `
             }
         ]
     ],
@@ -71,15 +79,19 @@ export const config = {
     },
 
     afterTest: async function (test) {
-        const screenshot = await browser.takeScreenshot()
-        allure.addAttachment(
-            `Screenshot - ${test.title}`,
-            Buffer.from(screenshot, 'base64'),
-            'image/png'
-        )
+        try {
+            const screenshot = await browser.takeScreenshot()
+            allure.addAttachment(
+                `Screenshot - ${test.title}`,
+                Buffer.from(screenshot, 'base64'),
+                'image/png'
+            )
 
-        const timestamp = new Date().toISOString().replace(/[:.]/g, '-')
-        const filepath = `./reports/screenshots/${test.title}-${timestamp}.png`
-        await browser.saveScreenshot(filepath)
+            const timestamp = new Date().toISOString().replace(/[:.]/g, '-')
+            const filepath = `./reports/screenshots/${test.title}-${timestamp}.png`
+            await browser.saveScreenshot(filepath)
+        } catch (err) {
+            console.error('Erro ao capturar screenshot:', err.message)
+        }
     }
 }
