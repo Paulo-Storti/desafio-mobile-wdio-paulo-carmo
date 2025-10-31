@@ -1,8 +1,6 @@
 import path from 'path'
 import allure from '@wdio/allure-reporter'
 
-const isCI = process.env.CI === 'true' // detecta se está rodando no GitHub Actions
-
 export const config = {
     runner: 'local',
     port: 1991,
@@ -12,8 +10,8 @@ export const config = {
 
     capabilities: [{
         platformName: 'Android',
-        'appium:deviceName': isCI ? 'Android Emulator' : 'emulator-5554',
-        'appium:platformVersion': isCI ? '11.0' : '16.0',
+        'appium:deviceName': 'emulator-5554',
+        'appium:platformVersion': '16.0',
         'appium:automationName': 'UiAutomator2',
         'appium:app': path.resolve('./app/android/android.wdio.native.app.v1.0.8.apk'),
         'appium:autoGrantPermissions': true,
@@ -46,27 +44,24 @@ export const config = {
             disableWebdriverStepsReporting: false,
             disableWebdriverScreenshotsReporting: false
         }],
-        [
-            'html-nice',
-            {
-                outputDir: './reports/html-reports',
-                filename: 'evidencia.html',
-                reportTitle: 'Evidência de Testes - WDIO',
-                showInBrowser: false,
-                collapseTests: false,
-                removeOutput: true,
-                useOnAfterCommandForScreenshot: true,
-                showScreenshot: true,
-                styleOverrides: `
-                    img {
-                        max-width: 400px;
-                        max-height: 400px;
-                        border-radius: 10px;
-                        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-                    }
-                `
-            }
-        ]
+        ['html-nice', {
+            outputDir: './reports/html-reports',
+            filename: 'evidencia.html',
+            reportTitle: 'Evidência de Testes - WDIO',
+            showInBrowser: false,
+            collapseTests: false,
+            removeOutput: true,
+            useOnAfterCommandForScreenshot: true,
+            showScreenshot: true,
+            styleOverrides: `
+                img {
+                    max-width: 400px;
+                    max-height: 400px;
+                    border-radius: 10px;
+                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+                }
+            `
+        }]
     ],
 
     mochaOpts: {
