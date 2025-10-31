@@ -47,6 +47,7 @@ export async function switchToDarkMode() {
 
 export async function expandLanguage() {
     await WebviewPage.btnLanguage.click()
+    await browser.pause(1000)
 }
 
 export async function changeLanguageToPtBr() {

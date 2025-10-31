@@ -1,24 +1,21 @@
-const path = require('path');
+import path from 'path'
+import allure from '@wdio/allure-reporter'
 
-exports.config = {
+export const config = {
     runner: 'local',
     port: 1991,
-
     specs: ['./test/specs/**/*.js'],
     exclude: [],
-
     maxInstances: 1,
 
     capabilities: [{
         platformName: 'Android',
         'appium:deviceName': 'emulator-5554',
-        'appium:udid': 'emulator-5554',
         'appium:platformVersion': '16.0',
         'appium:automationName': 'UiAutomator2',
         'appium:app': path.resolve('./app/android/android.wdio.native.app.v1.0.8.apk'),
         'appium:autoGrantPermissions': true,
         'appium:noReset': false,
-        'appium:newCommandTimeout': 120
     }],
 
     logLevel: 'info',
@@ -39,12 +36,31 @@ exports.config = {
     ],
 
     framework: 'mocha',
+
     reporters: [
         'spec',
-        ['allure', { 
-            outputDir: 'allure-results', 
-            disableWebdriverStepsReporting: true,
+        ['allure', {
+            outputDir: 'allure-results',
+            disableWebdriverStepsReporting: false,
             disableWebdriverScreenshotsReporting: false
+        }],
+        ['html-nice', {
+            outputDir: './reports/html-reports',
+            filename: 'evidencia.html',
+            reportTitle: 'Evidência de Testes - WDIO',
+            showInBrowser: false,
+            collapseTests: false,
+            removeOutput: true,
+            useOnAfterCommandForScreenshot: true,
+            showScreenshot: true,
+            styleOverrides: `
+                img {
+                    max-width: 400px;
+                    max-height: 400px;
+                    border-radius: 10px;
+                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+                }
+            `
         }]
     ],
 
@@ -54,13 +70,23 @@ exports.config = {
     },
 
     beforeSuite: function () {
-        if (global.gc) global.gc();
+        if (global.gc) global.gc()
     },
 
-    afterTest: async function (test, context, { error, passed }) {
-        if (!passed) {
-            await browser.takeScreenshot();
+    afterTest: async function (test) {
+        try {
+            const screenshot = await browser.takeScreenshot()
+            allure.addAttachment(
+                `Screenshot - ${test.title}`,
+                Buffer.from(screenshot, 'base64'),
+                'image/png'
+            )
+
+            const timestamp = new Date().toISOString().replace(/[:.]/g, '-')
+            const filepath = `./reports/screenshots/${test.title}-${timestamp}.png`
+            await browser.saveScreenshot(filepath)
+        } catch (err) {
+            console.error('Erro ao capturar screenshot:', err.message)
         }
-        if (global.gc) global.gc();
-    },
-};
+    }
+}
