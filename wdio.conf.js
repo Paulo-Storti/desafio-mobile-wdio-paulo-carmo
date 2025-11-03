@@ -1,6 +1,12 @@
 import path from 'path'
 import allure from '@wdio/allure-reporter'
 
+const isIOS = process.env.PLATFORM === 'ios'
+
+const appPath = isIOS
+  ? './app/ios/ios.wdio.native.app.v1.0.8.app'
+  : './app/android/android.wdio.native.app.v1.0.8.apk'
+
 export const config = {
     runner: 'local',
     port: 1991,
@@ -9,13 +15,10 @@ export const config = {
     maxInstances: 1,
 
     capabilities: [{
-        platformName: 'Android',
-        'appium:deviceName': 'emulator-5554',
-        'appium:platformVersion': '16.0',
-        'appium:automationName': 'UiAutomator2',
-        'appium:app': path.resolve('./app/android/android.wdio.native.app.v1.0.8.apk'),
-        'appium:autoGrantPermissions': true,
-        'appium:noReset': false,
+        platformName: isIOS ? 'iOS' : 'Android',
+        'appium:deviceName': isIOS ? 'iPhone 14' : 'emulator-5554',
+        'appium:automationName': isIOS ? 'XCUITest' : 'UiAutomator2',
+        'appium:app': path.resolve(appPath),
     }],
 
     logLevel: 'info',
