@@ -23,7 +23,7 @@
 - [Configuração do Ambiente](#-configuração-do-ambiente)
 - [Execução dos Testes](#-executar-testes-locais)
 - [Geração de Relatórios](#-geração-do-relatório-allure)
-- [Integração Jenkins (CI/CD)](#-integração-jenkins-cicd)
+- [Integração Jenkins](#integração-jenkins)
 - [Evidências](#-evidências)
 - [Flexibilidade iOS](#-flexibilidade-ios-framework-preparado)
 - [Autor](#-autor)
@@ -104,7 +104,7 @@ export default new LoginPage();
 ### 1️⃣ Requisitos
 - Node.js 20
 - Appium Server (2.x)
-- Android SDK configurado (com emulador ou dispositivo físico)
+- Android SDK configurado
 - Java JDK 21
 - Variáveis de ambiente configuradas:  
   `ANDROID_HOME`, `JAVA_HOME`, `PATH`
@@ -137,7 +137,145 @@ O relatório exibirá métricas, evidências (prints) e detalhes de execução.
 
 ---
 
-## ⚙️ Integração Jenkins (CI/CD)
+## 🧰 Configuração do Emulador Android (Pixel 8)
+
+Para executar os testes localmente, é necessário configurar um emulador Android no Android Studio.
+Abaixo estão as instruções completas para criar um emulador Pixel 8 compatível com o Appium.
+
+### 1️⃣ Instalar o Android Studio
+
+Baixe e instale a versão mais recente do Android Studio
+.
+
+Durante a instalação, marque as opções:
+
+* Android SDK
+
+* Android SDK Platform
+
+* Android Virtual Device (AVD)
+
+* Android SDK Command-line Tools
+
+### 2️⃣ Configurar o SDK e as Plataformas
+
+Após abrir o Android Studio:
+
+1. Vá em:
+```
+File ▸ Settings ▸ Appearance & Behavior ▸ System Settings ▸ Android SDK
+```
+2. Na aba SDK Platforms, marque:
+```
+Android 14 (Upside Down Cake)
+```
+
+3. Na aba SDK Tools, marque:
+```
+✅ Android SDK Build-Tools
+
+✅ Android Emulator
+
+✅ Android SDK Platform-Tools
+
+✅ Android SDK Command-line Tools
+
+✅ Clique em Apply e aguarde o download.
+```
+
+### 3️⃣ Criar o Emulador Pixel 8
+
+Vá em 
+```
+Tools ▸ Device Manager
+```
+
+Clique em
+```
+Create Device
+```
+Escolha:
+```
+Category: Phone
+Device: Pixel 8
+```
+
+Clique em 
+```
+Next
+```
+
+Escolha uma imagem de sistema:
+```
+Recomendado: Android 14 – Google APIs x86_64
+```
+Clique em 
+```
+Next ▸ Finish
+```
+
+### 4️⃣ Iniciar o Emulador
+
+No Device Manager, clique no botão ▶️ Play para iniciar o emulador.
+Aguarde até que o sistema seja carregado completamente.
+
+Verifique se o dispositivo foi detectado pelo ADB:
+```
+adb devices
+```
+
+A saída deve ser algo como:
+```
+List of devices attached
+emulator-5554	device
+```
+
+### 5️⃣ Iniciar o Appium
+
+Abrir um novo terminal no Visual Studio Code e enviar:
+
+```
+appium -p 1991
+```
+
+### 6️⃣ Abrir mais um terminal no Visual Studio Code
+
+Caso não tenha instalado previamente:
+
+```
+npm install 
+```
+
+Iniciar testes:
+
+```
+npm test
+```
+
+## 💡 Dica Extra — Variáveis de Ambiente Necessárias
+
+Certifique-se de que o sistema reconheça as variáveis abaixo:
+```
+_____________________________________________________________________
+| Variável      | Caminho (exemplo Windows)                         |
+|---------------|---------------------------------------------------|
+| JAVA_HOME     | C:\Program Files\Java\jdk-21                      |
+|---------------|---------------------------------------------------|
+| ANDROID_HOME  | C:\Users\<seu_usuario>\AppData\Local\Android\Sdk  |
+|---------------|---------------------------------------------------|
+| PATH          | %ANDROID_HOME%\platform-tools                     |
+|               | %ANDROID_HOME%\emulator                           |
+|               | %JAVA_HOME%\bin                                   |
+⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻⎻
+```
+
+Verifique com:
+```
+echo %JAVA_HOME%
+echo %ANDROID_HOME%
+```
+
+## ⚙️ Integração Jenkins <a id="integração-jenkins"></a>
 
 O projeto está configurado para execução automatizada no **Jenkins local**.
 
@@ -161,7 +299,12 @@ O projeto está configurado para execução automatizada no **Jenkins local**.
 ## 🎥 Execução no Jenkins (CI/CD)
 Veja abaixo a execução automatizada da pipeline no Jenkins local:
 
-[![Jenkins Pipeline](https://i9.ytimg.com/vi/AcQtbc_NsQw/mq1.jpg?sqp=CIDhn8gG-oaymwEmCMACELQB8quKqQMa8AEB-AHUBoAC4AOKAgwIABABGGUgZShlMA8=&rs=AOn4CLC0R8SQH2E_2DfSfdKoU2AAWMzI4Q)](https://www.youtube.com/watch?v=AcQtbc_NsQw)
+<p>
+  <a align="left" href="https://www.youtube.com/watch?v=AcQtbc_NsQw">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/YouTube_full-color_icon_%282024%29.svg/2560px-YouTube_full-color_icon_%282024%29.svg.png" width="120" alt="Jenkins Pipeline"/>
+  </a>
+</p>
+
 
 ## 📸 Evidências
 
